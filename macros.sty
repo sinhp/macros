@@ -1,7 +1,6 @@
-\usepackage{amsfonts, amssymb, amsmath, stmaryrd, mathrsfs, etoolbox, bbm}
+\usepackage{amsmath, amsfonts,amsthm, amssymb, faktor, amsmath, stmaryrd, mathrsfs, etoolbox, bbold, bbm}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{xr}
-\usepackage{amsthm}
 \usepackage{xfrac}  
 \usepackage{graphicx}
 \usepackage[color,matrix,arrow]{xy}
@@ -12,6 +11,17 @@
 \usepackage{url}
 \usepackage{tikz}
 \usepackage{tikz-cd}
+\usetikzlibrary{matrix,arrows,shapes,decorations.markings,decorations.pathreplacing}
+\tikzset{rewritenode/.style={shape=circle,draw,minimum size=1em}}
+\tikzset{
+	RWopen/.style={shape=circle,draw=black,fill=white,scale=0.5,font=\Huge}
+}
+\tikzset{
+	RWclosed/.style={shape=circle,fill=black,scale=0.5,font=\Huge}
+}
+\tikzset{CDnode/.style={shape=circle,fill=white,scale=.5}}
+\tikzset{->-/.style={decoration={markings,mark=at position .5 with {\arrow{>}}},postaction={decorate}}}
+
 \usetikzlibrary{calc}
 \usepackage{verbatim}
 %\usepackage[active,tightpage]{preview}
@@ -24,7 +34,7 @@
 \usepackage{multicol}
 \usepackage{mathpartir} % for inferrule
 \usepackage{xr-hyper} %The package describes itself as a development version of the standard package xr; it can create hyperlinks to the external documents that are cross-referenced.
-\usepackage{hyperref}
+
 \usetikzlibrary{matrix}
 \usepackage{media9}
 \usepackage{xcolor}
@@ -35,6 +45,7 @@
 \usepackage{ wasysym }
 \usepackage{stackrel}
 \usetikzlibrary{arrows,positioning,automata,shadows,fit,shapes,decorations.pathmorphing} 
+\usepackage{enumerate}% allows easy change of label
 
 \usepackage{leftidx} %Left and right subscripts and superscripts are raised
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
@@ -44,29 +55,48 @@
 
 \definecolor{remcol}{HTML}{6133FF}
 \definecolor{schoolcol}{rgb}{.192,.365,.506}
-\hypersetup{
-    colorlinks,
-    citecolor=schoolcol,
-    linkcolor=schoolcol,
-    urlcolor=schoolcol
+
+\hypersetup{%
+  pdftoolbar=   true,
+  pdfmenubar=   true,
+  pdffitwindow= true,
+  pdftitle=     {Fibrations of AU-contexts beget fibrations of toposes},
+  pdfauthor=    {Sina Hazratpour \& Steven Vickers},
+  colorlinks=   true,
+  linkcolor=    schoolcol,
+  citecolor=    schoolcol, 
+  urlcolor=schoolcol 
 }
 
+\let\LiningNumbers\relax
+\linespread{1.1}
 
-%%%%%%%%%%%%%%%%%%%%% for fancy colorbox
-\usepackage{etoolbox}%
-\usepackage{blindtext}%
-\usepackage[skins,breakable,xparse]{tcolorbox}
-\usepackage[tikz]{bclogo}
-%------------------------------------------------------------
+\DeclareTextFontCommand{\textrmup}{\rmfamily\mdseries\upshape}
+\DeclareTextFontCommand{\textbfup}{\rmfamily\bfseries\upshape}
+\DeclareTextFontCommand{\textttup}{\ttfamily\mdseries\upshape}
+\DeclareTextFontCommand{\textsfup}{\sffamily\mdseries\upshape}
 
+\makeatletter
+\@ifclassloaded{amsart}{}{ %
+\renewcommand\footnoterule{%
+  \vfill
+  \kern-3\p@
+  \hrule\@width.4\columnwidth
+  \kern2.6\p@}
+\renewcommand*{\@makefnmark}{\hbox{\textsuperscript{\normalfont [\LiningNumbers\@thefnmark]}}}
+\renewcommand*{\@makefntext}[1]{\parindent 1.0em\noindent\ifdefempty{\@thefnmark}{}{\hb@xt@-1.0em{\hss \normalfont [\LiningNumbers \@thefnmark]}\hspace{1.0em}}#1}
+\@addtoreset{footnote}{chapter}
+\newcommand{\footpar}[1]{\gdef\@thefnmark{}\@footnotetext{#1}}
+\newcommand{\hangsecnum}{\def\@seccntformat##1{\llap{\csname the##1\endcsname\quad}}}
+}
+\makeatother
 
+\newcommand{\strong}[1]{\textbfup{#1}}
 
-% NOTE: author macros  BEGIN here
 \makeatletter
 \let\ea\expandafter
 
 %%%%%%%%%% Concise commands for FONTS and DECORATIONS: (\mathcal{-}, \mathscr{-}, \mathbb{-}, \mathfrak{-}, overbar, underbar)
-
 \newcount\foreachcount
 
 \def\foreachletter#1#2#3{\foreachcount=#1
@@ -162,11 +192,58 @@
 \newcommand{\xrawdb}[2][]{%
   \xrightarrow[#1]{#2}\mathrel{\mkern-14mu}\rightarrow
 }
+
+% defining arrow with a vertical line through it
+\makeatletter
+\def\slashedarrowfill@#1#2#3#4#5{%
+	$\m@th\thickmuskip0mu\medmuskip\thickmuskip\thinmuskip\thickmuskip
+	\relax#5#1\mkern-7mu%
+	\cleaders\hbox{$#5\mkern-2mu#2\mkern-2mu$}\hfill
+	\mathclap{#3}\mathclap{#2}%
+	\cleaders\hbox{$#5\mkern-2mu#2\mkern-2mu$}\hfill
+	\mkern-7mu#4$%
+}
+\def\rightslashedarrowfill@{%
+	\slashedarrowfill@\relbar\relbar\mapstochar\rightarrow}
+\newcommand{\xslashedrightarrow}[2][]{%
+	\ext@arrow 0055{\rightslashedarrowfill@}{#1}{#2}}
+\makeatother
+
+\newcommand{\hto}{\xslashedrightarrow{}}
+
+
+
+%------------------------------------------------------------------ raise superscript
+\makeatletter
+\newcommand{\raisemath}[1]{\mathpalette{\raisem@th{#1}}}
+\newcommand{\raisem@th}[3]{\raisebox{#1}{$#2#3$}}
+\makeatother
+
+\newcommand{\subscript}[2]{$#1 #2$}
+
+\makeatletter
+\def\abbrdot{\@ifnextchar.{}{.\@\xspace}}
+\makeatother
+\newcommand{\etc}{etc\abbrdot}
+\newcommand{\eg}{e.g\abbrdot}
+\newcommand{\ie}{i.e\abbrdot}
+\newcommand{\resp}{resp\abbrdot}
+\newcommand{\confer}{cf\abbrdot}
+\newcommand{\loccit}{loc.\@ cit\abbrdot}
+\newcommand{\opcit}{op.\@ cit\abbrdot}
+
+
 \newcommand{\maps}{\colon}
+\newcommand{\eqdef}{\ensuremath{\mathrel{:=}}}
+
+\newcommand{\pbprod}{\mathbin{\square}}
+\newcommand{\cotens}{\mathbin{\pitchfork}}
 
 \newcommand{\bigslant}[2]{{\raisebox{.2em}{$#1$}\left/\raisebox{-.2em}{$#2$}\right.}}
-
 \newcommand{\bslant}[2]{{\left.\raisebox{.2em}{$#1$}\middle/\raisebox{-.2em}{$#2$}\right.}}
+
+
+\newcommand{\baseS}{\CS}
 
 
 \newcommand{\cd}[2][]{\vcenter{\hbox{\xymatrix#1{#2}}}}
@@ -174,6 +251,7 @@
 \newcommand{\pushoutcorner}[1][dr]{\save*!/#1-1.2pc/#1:(-1,1)@^{|-}\restore}
 \newcommand{\pullbackcornerr}[1][dr]{\save*!/#1+1.3pc/#1:(1,-1)@^{|-}\restore}
 \newcommand{\pushoutcornerr}[1][dr]{\save*!/#1-1.3pc/#1:(-1,1)@^{|-}\restore}
+
 
 %%
 %%%%%%%%% Upward 2-arrow /\
@@ -251,6 +329,7 @@
 \newcommand{\muobar}{\ensuremath{\overline{\mu}}}
 \newcommand{\tetobar}{\ensuremath{\overline{\theta}}}
 \newcommand{\fiobar}{\ensuremath{\overline{\varphi}}}
+\newcommand{\psiobar}{\ensuremath{\overline{\psi}}}
 \newcommand{\vfiobar}{\ensuremath{\overline{\varphi}}}
 \newcommand{\rftop}{\ensuremath{\overline{r_f}}}
 \newcommand{\rgtop}{\ensuremath{\overline{r_g}}}
@@ -288,6 +367,24 @@
 \newcommand{\tetubar}{\ensuremath{\underline{\theta}}}
 \newcommand{\fiubar}{\ensuremath{\underline{\varphi}}}
 
+
+ % http://www.ascii-art.de/ascii/c/cat.txt
+ %              _                        
+ %                     \`*-.                    
+ %                      )  _`-.                 
+ %                     .  : `. .                
+ %                     : _   '  \               
+ %                     ; *` _.   `*-._          
+ %                     `-.-'          `-.       
+ %                       ;       `       `.     
+ %                       :.       .        \    
+ %                       . \  .   :   .-'   .   
+ %                       '  `+.;  ;  '      :   
+ %                       :  '  |    ;       ;-. 
+ %                       ; '   : :`-:     _.`* ;
+ %              [bug] .*' /  .*' ; .*`- +'  `*' 
+ %                    `*-*   `*-*  `*-*'        
+ %
 
 %%%%%%%%%% Categories, 2-categories, and functors
 \newcommand{\Set}{\mathbf{Set}}
@@ -362,6 +459,14 @@
 \newcommand{\yon}{\mbox{\textit{y}}} %% Yoneda embedding
 \newcommand{\fibprod}[2]{\mathop{\leftidx{_{#1}}{\times}{_{#2}}}} %% fibre product with subscripts in the product
 
+\newcommand*{\ordlr}[3]{\mathord{\left#1{#2}\right#3}}
+\newcommand*{\commacat}[2]{\ordlr({#1 \mathbin{\downarrow} #2})}
+\newcommand*{\isocommacat}[2]{\ordlr({#1 \mathbin{\wr} #2})}
+
+\newcommand*{\slicecat}[2]{\mathord{#1 \mathord{\divslash} #2}}
+\newcommand*{\overcat}[2]{\mathord{#1 \sb{\mathord{\divslash} #2}}}
+\newcommand*{\undercat}[2]{\mathord{\sp{#1 \mathord{\divslash}} #2}}
+
 
 %%%%%%%% declare math operators
 \DeclareMathOperator{\Hom}{Hom}
@@ -383,6 +488,7 @@
 \newcommand{\Push}{\ensuremath{\operatorname{Push}}}
 \newcommand{\dom}{\ensuremath{\operatorname{dom}}}
 \newcommand{\cod}{\ensuremath{\operatorname{cod}}}
+\newcommand{\ccod}{\ensuremath{\mathbb{C}\mathbf{od}}}
 \newcommand{\fst}{\ensuremath{\operatorname{\texttt{fst}}}}
 \newcommand{\snd}{\ensuremath{\operatorname{\texttt{snd}}}}
 \newcommand{\prfst}{\ensuremath{\operatorname{pr_0}}}
@@ -396,10 +502,8 @@
 
 
 
-%%%%%%%% for labelling and renaming items simultaneously 
+%%%%%%% for labelling and renaming items simultaneously 
 \usepackage{enumitem}
-\newcommand{\subscript}[2]{$#1 #2$}
-
 %***************
 \newtheoremstyle{thmstyle}
   {\topsep}
@@ -433,96 +537,34 @@
 \theoremstyle{defnstyle}
 \newtheorem{defn}{\textsc{Definition}}[section]
 \newtheorem{cons}[defn]{\textsc{Construction}}
-\newtheorem{remark}[defn]{\textsc{Remark}}
+\newtheorem{rem}[defn]{\textsc{Remark}}
 \newtheorem{ex}[defn]{\textsc{Example}}
 
 
-\makeatletter
-%%%%% theorem, defn, etc environments
-%%%% THEOREM-TYPE ENVIRONMENTS (TAC style), hacked to
-%%% (a) number all with the same numbers, and
-%%% (b) have the right names.
-  \let\your@state\state
-  \def\state#1{\my@state#1}
-  \def\my@state#1.{\gdef\currthmtype{#1}\your@state{#1.}}
-  \let\your@staterm\staterm
-  \def\staterm#1{\my@staterm#1}
-  \def\my@staterm#1.{\gdef\currthmtype{#1}\your@staterm{#1.}}
-  \let\@defthm\newtheorem
-  \def\switchtotheoremrm{\let\@defthm\newtheoremrm}
-  \def\defthm#1#2#3{\@defthm{#1}{#2}} % Ignore the third argument (for cleveref only)
-  % Start out \currthmtype as empty
-  \def\currthmtype{}
-  % In a bit, we're going to redefine \label so that \label{athm} will
-  % also make a label "label@name@athm" which is the current value of
-  % \currthmtype.  Now \autoref{athm} just adds a reference to this in
-  % front of the reference.
-  \def\autoref#1{\ref*{label@name@#1}~\ref{#1}}
-  \let\your@section\section
-  \def\section{\gdef\currthmtype{section}\your@section}
-  % This has to go AFTER the \begin{document} because apparently
-  % hyperref resets the definition of \label at that point.
-  \AtBeginDocument{%
-    % Save the old definition of \label
-    \let\old@label\label%
-    % Redefine \label so that \label{athm} will also make a label
-    % "label@name@athm" which is the current value of \currthmtype.
-    \def\label#1{%
-      {\let\your@currentlabel\@currentlabel%
-        \edef\@currentlabel{\currthmtype}%
-        \old@label{label@name@#1}}%
-      \old@label{#1}}
-  }
-  % TODO: This doesn't work for references to figures!
-  \let\cref\autoref
-\makeatother
 
 \newcommand{\keydef}[1]{\textsc{#1}}
-
 % Number numbered lists as (i), (ii), ...
 \renewcommand{\theenumi}{(\roman{enumi})}
 \renewcommand{\labelenumi}{\theenumi}
 
 
-% defining arrow with a vertical line through it
-\makeatletter
-\def\slashedarrowfill@#1#2#3#4#5{%
-	$\m@th\thickmuskip0mu\medmuskip\thickmuskip\thinmuskip\thickmuskip
-	\relax#5#1\mkern-7mu%
-	\cleaders\hbox{$#5\mkern-2mu#2\mkern-2mu$}\hfill
-	\mathclap{#3}\mathclap{#2}%
-	\cleaders\hbox{$#5\mkern-2mu#2\mkern-2mu$}\hfill
-	\mkern-7mu#4$%
-}
-\def\rightslashedarrowfill@{%
-	\slashedarrowfill@\relbar\relbar\mapstochar\rightarrow}
-\newcommand{\xslashedrightarrow}[2][]{%
-	\ext@arrow 0055{\rightslashedarrowfill@}{#1}{#2}}
-\makeatother
-
-\newcommand{\hto}{\xslashedrightarrow{}}
-
-
-
-%------------------------------------------------------------------ raise superscript
-\makeatletter
-\newcommand{\raisemath}[1]{\mathpalette{\raisem@th{#1}}}
-\newcommand{\raisem@th}[3]{\raisebox{#1}{$#2#3$}}
-\makeatother
-
-
+\newcommand*{\smashsp}[2]{{#1}\sp{\smash{#2}}}
 %%%%%%%%%% MISCELLANEOUS SYMBOLS
-\newcommand{\op}[1]{#1^{\mathrm{op}}}
-\newcommand{\co}[1]{#1^{\mathrm{co}}}
-\newcommand{\coop}[1]{#1^{\mathrm{coop}}}
+\newcommand*{\op}[1]{\smashsp{#1}{\mathrm{op}}}
+\newcommand*{\co}[1]{\smashsp{#1}{\mathrm{co}}}
+\newcommand*{\coop}[1]{\smashsp{#1}{\mathrm{co\hairspace op}}}
+% \newcommand{\op}[1]{#1^{\mathrm{op}}}
+% \newcommand{\co}[1]{#1^{\mathrm{co}}}
+% \newcommand{\coop}[1]{#1^{\mathrm{coop}}}
 \let\ten\otimes
 \newcommand{\oo}{\circ}
 \newcommand{\adj}{\dashv}
 \newcommand{\pr}{^\prime}
 \newcommand{\dn}{\downarrow}
-\newcommand{\trm}{\mathbbm{1}}
-\newcommand{\walkarr}{\mathbbm{2}}
-\newcommand{\comma}[1]{#1^{\raisemath{2pt}{\dn}}}
+\newcommand{\trm}{\mathbb{1}}           % uses bbm package
+\newcommand{\walkarr}{\mathbb{2}}       % uses bbm package
+%\newcommand{\comma}[1]{#1^{\raisemath{2pt}{\dn}}}
+\newcommand{\comma}[1]{\ordlr({#1 \mathbin{\downarrow} #1})}
 \newcommand{\arrw}[1]{#1^{\raisemath{2pt}{\to}}}
 \newcommand{\doublecomma}[1]{#1^{\raisemath{2pt}{\to\to}}}
 \newcommand{\sub}[2]{#1_{\raisemath{-2pt}{#2}}}
@@ -605,6 +647,7 @@
 \newcommand{\qeqcomp}{\circ}                % composition, binary, applicational order
 \newcommand{\qeqt}{1}                 % terminal object
 \newcommand{\qeqtfill}{\mathop{!}\nolimits^{\qeqt}}                 % unique morphism to terminal object
+\newcommand{\qeqlcons}{\mathop{\mathsf{cons}}}        % cons
 \newcommand{\qeqprodproj}{\mathsf{p}}       % projections from product
 \newcommand{\qeqproj}[2]{\qeqprodproj_{#1,#2}}% projections from pullback
 \newcommand{\qeqpb}[2]{\mathsf{P}_{#1,#2}}             % pullback object
@@ -623,29 +666,15 @@
 \newcommand{\qeqpostab}[3]{\mathsf{stab}_{#1,#2}(#3)} % iso for stability along #3 of pushout of ##1,2
 \newcommand{\qeqex}{\mathsf{ex}}            % exactness iso
 \newcommand{\qeqle}{\varepsilon}        % empty list
-\newcommand{\qeqlcons}{\cons}        % cons
+
   % old notation from Maietti-Vickers
 %\newcommand{\qeqle}{\mathsf{r}_{0}}        % empty list
 %\newcommand{\qeqlsnoc}{\mathsf{r}_{1}}        % snoc
 \newcommand{\qeql}{\mathsf{List}}           % list object
 \newcommand{\qeqlrec}[3]{\mathsf{rec}^{#1}(#2,#3)} % rec (A,b,g)
 \newcommand{\qeqlu}[4]{\mathsf{u}^{#1}_{#2,#3}(#4)}        % list uniqueness (A,b,g,r)
+\newcommand{\thone}{\mathbb{1}}
 
-
-
-
-
-%%%%%%%%%% warning 
-
-\DeclareTotalTColorBox[auto counter]{\warn}{ O{} m }
-{ enhanced,breakable,
-  boxrule=0pt,boxsep=0pt,arc=2mm,toptitle=3mm,top=3mm,left=7mm,right=1mm,pad at break=2mm,
-  colframe=blue!20!white,interior hidden,
-  coltitle=black,fonttitle=\bfseries\large,title={ %~\thetcbcounter
-  },
-  overlay unbroken and first={\node at ([xshift=4mm,yshift=-5mm]frame.north west) {\bclampe};},
-  #1}
-  {\raggedright #2}
 
 
 %%%%%%%
@@ -670,3 +699,6 @@
 \advance\itex@thd\the\itex@dp%
 \makebox[\the\itex@wd]{\rule[-\the\itex@dp]{0cm}{\the\itex@thd}}}
 \makeatother
+
+
+
