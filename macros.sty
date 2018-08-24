@@ -1,4 +1,4 @@
-\usepackage{amsmath, amsfonts,amsthm, amssymb, faktor, amsmath, stmaryrd, mathrsfs, etoolbox, bbold, bbm}
+\usepackage{amsmath, amsfonts,amsthm, amssymb, faktor, amsmath, stmaryrd, mathrsfs, etoolbox, bbm}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{xr}
 \usepackage{xfrac}  
@@ -45,7 +45,7 @@
 \usepackage{ wasysym }
 \usepackage{stackrel}
 \usetikzlibrary{arrows,positioning,automata,shadows,fit,shapes,decorations.pathmorphing} 
-\usepackage{enumerate}% allows easy change of label
+
 
 \usepackage{leftidx} %Left and right subscripts and superscripts are raised
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
@@ -56,46 +56,29 @@
 \definecolor{remcol}{HTML}{6133FF}
 \definecolor{schoolcol}{rgb}{.192,.365,.506}
 
-\hypersetup{%
-  pdftoolbar=   true,
-  pdfmenubar=   true,
-  pdffitwindow= true,
-  pdftitle=     {Fibrations of AU-contexts beget fibrations of toposes},
-  pdfauthor=    {Sina Hazratpour \& Steven Vickers},
-  colorlinks=   true,
-  linkcolor=    schoolcol,
-  citecolor=    schoolcol, 
-  urlcolor=schoolcol 
-}
+% \hypersetup{%
+%   pdftoolbar=   true,
+%   pdfmenubar=   true,
+%   pdffitwindow= true,
+%   pdftitle=     {},
+%   pdfauthor=    {Sina Hazratpour},
+%   colorlinks=   true,
+%   linkcolor=    schoolcol,
+%   citecolor=    schoolcol, 
+%   urlcolor=     schoolcol 
+% }
 
-\let\LiningNumbers\relax
-\linespread{1.1}
 
 \DeclareTextFontCommand{\textrmup}{\rmfamily\mdseries\upshape}
 \DeclareTextFontCommand{\textbfup}{\rmfamily\bfseries\upshape}
 \DeclareTextFontCommand{\textttup}{\ttfamily\mdseries\upshape}
 \DeclareTextFontCommand{\textsfup}{\sffamily\mdseries\upshape}
 
-\makeatletter
-\@ifclassloaded{amsart}{}{ %
-\renewcommand\footnoterule{%
-  \vfill
-  \kern-3\p@
-  \hrule\@width.4\columnwidth
-  \kern2.6\p@}
-\renewcommand*{\@makefnmark}{\hbox{\textsuperscript{\normalfont [\LiningNumbers\@thefnmark]}}}
-\renewcommand*{\@makefntext}[1]{\parindent 1.0em\noindent\ifdefempty{\@thefnmark}{}{\hb@xt@-1.0em{\hss \normalfont [\LiningNumbers \@thefnmark]}\hspace{1.0em}}#1}
-\@addtoreset{footnote}{chapter}
-\newcommand{\footpar}[1]{\gdef\@thefnmark{}\@footnotetext{#1}}
-\newcommand{\hangsecnum}{\def\@seccntformat##1{\llap{\csname the##1\endcsname\quad}}}
-}
-\makeatother
 
 \newcommand{\strong}[1]{\textbfup{#1}}
 
 \makeatletter
 \let\ea\expandafter
-
 %%%%%%%%%% Concise commands for FONTS and DECORATIONS: (\mathcal{-}, \mathscr{-}, \mathbb{-}, \mathfrak{-}, overbar, underbar)
 \newcount\foreachcount
 
