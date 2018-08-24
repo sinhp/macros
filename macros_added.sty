@@ -1,0 +1,704 @@
+\usepackage{amsmath, amsfonts,amsthm, amssymb, faktor, amsmath, stmaryrd, mathrsfs, etoolbox, bbold, bbm}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{xr}
+\usepackage{xfrac}  
+\usepackage{graphicx}
+\usepackage[color,matrix,arrow]{xy}
+\usepackage{xspace}
+\usepackage{graphics}
+% \usepackage[usenames, dvipsnames]{color}
+\usepackage[active]{srcltx}
+\usepackage{url}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{matrix,arrows,shapes,decorations.markings,decorations.pathreplacing}
+\tikzset{rewritenode/.style={shape=circle,draw,minimum size=1em}}
+\tikzset{
+	RWopen/.style={shape=circle,draw=black,fill=white,scale=0.5,font=\Huge}
+}
+\tikzset{
+	RWclosed/.style={shape=circle,fill=black,scale=0.5,font=\Huge}
+}
+\tikzset{CDnode/.style={shape=circle,fill=white,scale=.5}}
+\tikzset{->-/.style={decoration={markings,mark=at position .5 with {\arrow{>}}},postaction={decorate}}}
+
+\usetikzlibrary{calc}
+\usepackage{verbatim}
+%\usepackage[active,tightpage]{preview}
+\usepackage{ragged2e}
+\usepackage{epigraph}
+\usepackage{xypic}
+\xyoption{2cell}
+\UseAllTwocells
+\usepackage{upgreek}
+\usepackage{multicol}
+\usepackage{mathpartir} % for inferrule
+\usepackage{xr-hyper} %The package describes itself as a development version of the standard package xr; it can create hyperlinks to the external documents that are cross-referenced.
+
+\usetikzlibrary{matrix}
+\usepackage{media9}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{dirtytalk}
+\usepackage{romannum}
+\usepackage[T1]{fontenc}
+\usepackage{ wasysym }
+\usepackage{stackrel}
+\usetikzlibrary{arrows,positioning,automata,shadows,fit,shapes,decorations.pathmorphing} 
+\usepackage{enumerate}% allows easy change of label
+
+\usepackage{leftidx} %Left and right subscripts and superscripts are raised
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+\newcommand\ytl[2]{
+\parbox[b]{8em}{\hfill{\color{schoolcol}\bfseries\sffamily #1}~$\cdots$~}\makebox[0pt][c]{$\bullet$}\vrule\quad \parbox[c]{4.5cm}{\vspace{7pt}\color{red!40!black!80}\raggedright\sffamily #2.\\[7pt]}\\[-3pt]}
+
+\definecolor{remcol}{HTML}{6133FF}
+\definecolor{schoolcol}{rgb}{.192,.365,.506}
+
+\hypersetup{%
+  pdftoolbar=   true,
+  pdfmenubar=   true,
+  pdffitwindow= true,
+  pdftitle=     {Fibrations of AU-contexts beget fibrations of toposes},
+  pdfauthor=    {Sina Hazratpour \& Steven Vickers},
+  colorlinks=   true,
+  linkcolor=    schoolcol,
+  citecolor=    schoolcol, 
+  urlcolor=schoolcol 
+}
+
+\let\LiningNumbers\relax
+\linespread{1.1}
+
+\DeclareTextFontCommand{\textrmup}{\rmfamily\mdseries\upshape}
+\DeclareTextFontCommand{\textbfup}{\rmfamily\bfseries\upshape}
+\DeclareTextFontCommand{\textttup}{\ttfamily\mdseries\upshape}
+\DeclareTextFontCommand{\textsfup}{\sffamily\mdseries\upshape}
+
+\makeatletter
+\@ifclassloaded{amsart}{}{ %
+\renewcommand\footnoterule{%
+  \vfill
+  \kern-3\p@
+  \hrule\@width.4\columnwidth
+  \kern2.6\p@}
+\renewcommand*{\@makefnmark}{\hbox{\textsuperscript{\normalfont [\LiningNumbers\@thefnmark]}}}
+\renewcommand*{\@makefntext}[1]{\parindent 1.0em\noindent\ifdefempty{\@thefnmark}{}{\hb@xt@-1.0em{\hss \normalfont [\LiningNumbers \@thefnmark]}\hspace{1.0em}}#1}
+\@addtoreset{footnote}{chapter}
+\newcommand{\footpar}[1]{\gdef\@thefnmark{}\@footnotetext{#1}}
+\newcommand{\hangsecnum}{\def\@seccntformat##1{\llap{\csname the##1\endcsname\quad}}}
+}
+\makeatother
+
+\newcommand{\strong}[1]{\textbfup{#1}}
+
+\makeatletter
+\let\ea\expandafter
+
+%%%%%%%%%% Concise commands for FONTS and DECORATIONS: (\mathcal{-}, \mathscr{-}, \mathbb{-}, \mathfrak{-}, overbar, underbar)
+\newcount\foreachcount
+
+\def\foreachletter#1#2#3{\foreachcount=#1
+  \ea\loop\ea\ea\ea#3\@alph\foreachcount
+  \advance\foreachcount by 1
+  \ifnum\foreachcount<#2\repeat}
+
+\def\foreachLetter#1#2#3{\foreachcount=#1
+  \ea\loop\ea\ea\ea#3\@Alph\foreachcount
+  \advance\foreachcount by 1
+  \ifnum\foreachcount<#2\repeat}
+
+% calligraphic: \CA = \mathcal{A}
+\def\definecal#1{\ea\gdef\csname C#1\endcsname{\ensuremath{\mathcal{#1}}\xspace}}
+\foreachLetter{1}{27}{\definecal}
+
+% Euler script: \KA = \mathscr{A}
+\def\defineEuscr#1{\ea\gdef\csname K#1\endcsname{\ensuremath{\mathscr{#1}}\xspace}}
+\foreachLetter{1}{27}{\defineEuscr}
+
+% blackboard bold: \bbA = \mathbb{A}
+\def\definebb#1{\ea\gdef\csname bb#1\endcsname{\ensuremath{\mathbb{#1}}\xspace}}
+\foreachLetter{1}{27}{\definebb}
+
+% Euler script: \sA = \mathscr{A}
+\def\defineEuscr#1{\ea\gdef\csname s#1\endcsname{\ensuremath{\mathscr{#1}}\xspace}}
+\foreachLetter{1}{27}{\defineEuscr}
+
+
+% fraktur: \fa = \mathfrak{a}, except for \fi;       also,      \fA = \mathfrak{A}
+\def\definefrak#1{\ea\gdef\csname f#1\endcsname{\ensuremath{\mathfrak{#1}}\xspace}}
+\foreachletter{1}{9}{\definefrak}
+\foreachletter{10}{27}{\definefrak}
+\foreachLetter{1}{27}{\definefrak}
+
+% overbar: \Aobar = \overline{A},                    \aobar = \overline{a}
+\def\defineobar#1{\ea\gdef\csname #1obar\endcsname{\ensuremath{\overline{#1}}\xspace}}
+\foreachLetter{1}{27}{\defineobar}
+\foreachletter{1}{27}{\defineobar} 
+
+% underbar: \Aubar = \underline{A},                  \aubar = \underline{a}
+\def\defineubar#1{\ea\gdef\csname #1ubar\endcsname{\ensuremath{\underline{#1}}\xspace}}
+\foreachLetter{1}{27}{\defineubar}
+\foreachletter{1}{27}{\defineubar} 
+
+% blacktriangledown 
+\def\definetri#1{\ea\gdef\csname #1tri\endcsname{\ensuremath{\stackrel[]{\blacktriangledown}{#1}{}}\xspace}}
+\foreachLetter{1}{27}{\definetri}
+\foreachletter{1}{27}{\definetri}
+
+\newcommand{\tri}[1]{\ensuremath{\stackrel[]{\blacktriangledown}{#1}{}}}
+\newcommand{\tricell}[1]{\lang \overline{#1}, \tri{#1}, \underline{#1} \rang}
+
+% tildes
+\def\definetil#1{\ea\gdef\csname #1til\endcsname{\ensuremath{\widetilde{#1}}\xspace}}
+\foreachLetter{1}{27}{\definetil}
+\foreachletter{1}{27}{\definetil} 
+
+
+% sketch nodes
+\def\defineskstuff#1{\ea\gdef\csname #1sk\endcsname{\ensuremath{\san{#1}}\xspace}}
+\foreachLetter{1}{27}{\defineskstuff}
+\foreachletter{1}{27}{\defineskstuff} 
+
+
+%%%%%%%%%%%% Arrows
+% \to already exists
+\newcommand{\To}{\Rightarrow}
+\newcommand{\toto}{\ensuremath{\rightrightarrows}}
+\newcommand{\into}{\ensuremath{\hookrightarrow}}
+\newcommand{\mono}{\ensuremath{\rightarrowtail}}
+\newcommand{\subob}{\mono}
+\newcommand{\biimpl}{\ensuremath{\Leftrightarrow}}
+\newcommand{\too}[1][]{\ensuremath{\overset{#1}{\longrightarrow}}}
+\let\xto\xrightarrow
+\def\toiso{\xto{\smash{\raisebox{-.5mm}{$\scriptstyle\sim$}}}}
+
+\newcommand{\raw}{\rightarrow}
+\newcommand{\law}{\leftarrow}
+\newcommand{\Raw}{\Rightarrow}
+\newcommand{\Law}{\Leftarrow}
+\newcommand{\xraw}{\xrightarrow}
+
+\makeatletter
+\newcommand{\xRaw}[2][]{\ext@arrow 0359\Rightarrowfill@{#1}{#2}}
+\makeatother
+\newcommand{\xlaw}{\xleftarrow}
+
+\makeatletter
+\newcommand{\xLaw}[2][]{\ext@arrow 0359\Leftarrowfill@{#2}{#1}}
+\makeatother
+\newcommand{\rightarrowdbl}{\rightarrow\mathrel{\mkern-14mu}\rightarrow}
+\newcommand{\xrawdb}[2][]{%
+  \xrightarrow[#1]{#2}\mathrel{\mkern-14mu}\rightarrow
+}
+
+% defining arrow with a vertical line through it
+\makeatletter
+\def\slashedarrowfill@#1#2#3#4#5{%
+	$\m@th\thickmuskip0mu\medmuskip\thickmuskip\thinmuskip\thickmuskip
+	\relax#5#1\mkern-7mu%
+	\cleaders\hbox{$#5\mkern-2mu#2\mkern-2mu$}\hfill
+	\mathclap{#3}\mathclap{#2}%
+	\cleaders\hbox{$#5\mkern-2mu#2\mkern-2mu$}\hfill
+	\mkern-7mu#4$%
+}
+\def\rightslashedarrowfill@{%
+	\slashedarrowfill@\relbar\relbar\mapstochar\rightarrow}
+\newcommand{\xslashedrightarrow}[2][]{%
+	\ext@arrow 0055{\rightslashedarrowfill@}{#1}{#2}}
+\makeatother
+
+\newcommand{\hto}{\xslashedrightarrow{}}
+
+
+
+%------------------------------------------------------------------ raise superscript
+\makeatletter
+\newcommand{\raisemath}[1]{\mathpalette{\raisem@th{#1}}}
+\newcommand{\raisem@th}[3]{\raisebox{#1}{$#2#3$}}
+\makeatother
+
+\newcommand{\subscript}[2]{$#1 #2$}
+
+\makeatletter
+\def\abbrdot{\@ifnextchar.{}{.\@\xspace}}
+\makeatother
+\newcommand{\etc}{etc\abbrdot}
+\newcommand{\eg}{e.g\abbrdot}
+\newcommand{\ie}{i.e\abbrdot}
+\newcommand{\resp}{resp\abbrdot}
+\newcommand{\confer}{cf\abbrdot}
+\newcommand{\loccit}{loc.\@ cit\abbrdot}
+\newcommand{\opcit}{op.\@ cit\abbrdot}
+
+
+\newcommand{\maps}{\colon}
+\newcommand{\eqdef}{\ensuremath{\mathrel{:=}}}
+
+\newcommand{\pbprod}{\mathbin{\square}}
+\newcommand{\cotens}{\mathbin{\pitchfork}}
+
+\newcommand{\bigslant}[2]{{\raisebox{.2em}{$#1$}\left/\raisebox{-.2em}{$#2$}\right.}}
+\newcommand{\bslant}[2]{{\left.\raisebox{.2em}{$#1$}\middle/\raisebox{-.2em}{$#2$}\right.}}
+
+
+\newcommand{\baseS}{\CS}
+
+
+\newcommand{\cd}[2][]{\vcenter{\hbox{\xymatrix#1{#2}}}}
+\newcommand{\pullbackcorner}[1][dr]{\save*!/#1+1.2pc/#1:(1,-1)@^{|-}\restore}
+\newcommand{\pushoutcorner}[1][dr]{\save*!/#1-1.2pc/#1:(-1,1)@^{|-}\restore}
+\newcommand{\pullbackcornerr}[1][dr]{\save*!/#1+1.3pc/#1:(1,-1)@^{|-}\restore}
+\newcommand{\pushoutcornerr}[1][dr]{\save*!/#1-1.3pc/#1:(-1,1)@^{|-}\restore}
+
+
+%%
+%%%%%%%%% Upward 2-arrow /\
+%%                       ||
+\newcommand{\fup}{f\mathord{\Uparrow}}
+\newcommand{\alup}{\alpha\mathord{\Uparrow}}
+\newcommand{\betup}{\beta\mathord{\Uparrow}}
+\newcommand{\Fiup}{\Phi\mathord{\Uparrow}}
+\newcommand{\Fipup}{\Phi_p \mathord{\Uparrow}}
+\newcommand{\fiup}{\phi\mathord{\Uparrow}}
+\newcommand{\fipup}{\phi_p\mathord{\Uparrow}}
+\newcommand{\fiprmup}{\phi'\mathord{\Uparrow}}
+\newcommand{\sigobardar}{\sigobar\mathord{\Uparrow}}
+\newcommand{\fiprup}{\phi'\mathord{\Uparrow}}
+\newcommand{\zetup}{\zeta\mathord{\Uparrow}}
+\newcommand{\idup}{id\mathord{\Uparrow}}
+\newcommand{\etup}{\eta\mathord{\Uparrow}}
+
+%%%% Downward 2-Arrows ||
+%%                     \/
+%%
+\newcommand{\dar}[1]{{#1}\mathord{\Downarrow}}
+\newcommand{\fdar}{\tri{f} \mathord{\Downarrow}}
+\newcommand{\fcdar}{\check{f}\mathord{\Downarrow}}
+\newcommand{\fpdar}{f_p\mathord{\Downarrow}}
+\newcommand{\gdar}{\tri{g}\mathord{\Downarrow}}
+\newcommand{\hdar}{\tri{h}\mathord{\Downarrow}}
+\newcommand{\kdar}{\tri{k}\mathord{\Downarrow}}
+\newcommand{\ldar}{\tri{l}\mathord{\Downarrow}}
+\newcommand{\vdar}{\tri{v}\mathord{\Downarrow}}
+\newcommand{\xdar}{\tri{x}\mathord{\Downarrow}}
+\newcommand{\iddar}{id\mathord{\Downarrow}}
+\newcommand{\zetinvdar}{\zeta^{-1}\mathord{\Downarrow}}
+\newcommand{\taudarz}{\tau_0\mathord{\Downarrow}}
+\newcommand{\taudarone}{\tau_1\mathord{\Downarrow}}
+\newcommand{\etdar}{\eta\mathord{\Downarrow}}
+\newcommand{\epdar}{\epsilon\mathord{\Downarrow}}
+
+\newcommand{\aldar}{\alpha\mathord{\Downarrow}}
+\newcommand{\alodar}{\alobar\mathord{\Downarrow}}
+\newcommand{\alpdar}{\alpha_p\mathord{\Downarrow}}
+\newcommand{\sigdar}{\sigma\mathord{\Downarrow}}
+\newcommand{\betdar}{\beta\mathord{\Downarrow}}
+\newcommand{\betodar}{\betobar\mathord{\Downarrow}}
+\newcommand{\betpdar}{\beta_p\mathord{\Downarrow}}
+\newcommand{\tetdar}{\theta\mathord{\Downarrow}}
+\newcommand{\zetdar}{\zeta\mathord{\Downarrow}}
+\newcommand{\gamdar}{\gamma\mathord{\Downarrow}}
+\newcommand{\lamdar}{\lambda\mathord{\Downarrow}}
+
+\newcommand{\ftdar}{\tri{f} \mathord{\Downarrow}}
+\newcommand{\gtdar}{\tri{g} \mathord{\Downarrow}}
+\newcommand{\htdar}{\tri{h} \mathord{\Downarrow}}
+\newcommand{\hztdar}{\tri{h_0} \mathord{\Downarrow}}
+\newcommand{\xtdar}{\tri{x} \mathord{\Downarrow}}
+\newcommand{\ytdar}{\tri{y} \mathord{\Downarrow}}
+\newcommand{\rfdnar}{\tri{r_{f}}\mathord{\Downarrow}}
+\newcommand{\raldnar}{\tri{r_{\alpha}}\mathord{\Downarrow}}
+\newcommand{\elaldnar}{\tri{l_{\alpha}}\mathord{\Downarrow}}
+\newcommand{\rbetdnar}{\tri{r_{\beta}}\mathord{\Downarrow}}
+\newcommand{\elbetdnar}{\tri{l_{\beta}}\mathord{\Downarrow}}
+\newcommand{\ralupar}{\tri{r_{\alpha}}\mathord{\Uparrow}}
+\newcommand{\elalupar}{\tri{l_{\alpha}}\mathord{\Uparrow}}
+\newcommand{\rbetupar}{\tri{r_{\beta}}\mathord{\Uparrow}}
+\newcommand{\elbetupar}{\tri{l_{\beta}}\mathord{\Uparrow}}
+
+%%%% Upper bar
+\newcommand{\alobar}{\ensuremath{\overline{\alpha}}}
+\newcommand{\betobar}{\ensuremath{\overline{\beta}}}
+\newcommand{\gamobar}{\ensuremath{\overline{\gamma}}}
+\newcommand{\delobar}{\ensuremath{\overline{\delta}}}
+\newcommand{\sigobar}{\ensuremath{\overline{\sigma}}}
+\newcommand{\chiobar}{\ensuremath{\overline{\chi}}}
+\newcommand{\iotobar}{\ensuremath{\overline{\iota}}}
+\newcommand{\muobar}{\ensuremath{\overline{\mu}}}
+\newcommand{\tetobar}{\ensuremath{\overline{\theta}}}
+\newcommand{\fiobar}{\ensuremath{\overline{\varphi}}}
+\newcommand{\psiobar}{\ensuremath{\overline{\psi}}}
+\newcommand{\vfiobar}{\ensuremath{\overline{\varphi}}}
+\newcommand{\rftop}{\ensuremath{\overline{r_f}}}
+\newcommand{\rgtop}{\ensuremath{\overline{r_g}}}
+\newcommand{\rhtop}{\ensuremath{\overline{r_h}}}
+\newcommand{\raltop}{\ensuremath{\overline{r_\alpha}}}
+\newcommand{\elaltop}{\ensuremath{\overline{l_\alpha}}}
+\newcommand{\rbettop}{\ensuremath{\overline{r_\beta}}}
+\newcommand{\elbettop}{\ensuremath{\overline{l_\beta}}}
+
+%%%% Upper bar + triangle 
+\newcommand{\rfmid}{\ensuremath{\tri{r_{f}}}}
+\newcommand{\rgmid}{\ensuremath{\tri{r_{g}}}}
+\newcommand{\rhmid}{\ensuremath{\tri{r_{h}}}}
+\newcommand{\ralmid}{\ensuremath{\tri{r_{\alpha}}}}
+\newcommand{\elalmid}{\ensuremath{\tri{l_{\alpha}}}}
+\newcommand{\rbetmid}{\ensuremath{\tri{r_{\beta}}}}
+\newcommand{\elbetmid}{\ensuremath{\tri{l_{\beta}}}}
+\newcommand{\rgammid}{\ensuremath{\tri{r_{\gamma}}}}
+\newcommand{\elgammid}{\ensuremath{\tri{l_{\gamma}}}}
+
+%%% overline + star
+\newcommand{\stbar}[1]{\str{\overline{#1}}}
+\newcommand{\strbar}[1]{{\overline{#1}^*}}
+\newcommand{\stund}[1]{\str{\underline{#1}}}
+\newcommand{\strund}[1]{{\underline{#1}^*}}
+
+%%%% Underbar
+\newcommand{\alubar}{\ensuremath{\underline{\alpha}}}
+\newcommand{\betubar}{\ensuremath{\underline{\beta}}}
+\newcommand{\gamubar}{\ensuremath{\underline{\gamma}}}
+\newcommand{\delubar}{\ensuremath{\underline{\delta}}}
+\newcommand{\sigubar}{\ensuremath{\underline{\sigma}}}
+\newcommand{\iotubar}{\ensuremath{\underline{\iota}}}
+\newcommand{\muubar}{\ensuremath{\underline{\mu}}}
+\newcommand{\tetubar}{\ensuremath{\underline{\theta}}}
+\newcommand{\fiubar}{\ensuremath{\underline{\varphi}}}
+
+
+ % http://www.ascii-art.de/ascii/c/cat.txt
+ %              _                        
+ %                     \`*-.                    
+ %                      )  _`-.                 
+ %                     .  : `. .                
+ %                     : _   '  \               
+ %                     ; *` _.   `*-._          
+ %                     `-.-'          `-.       
+ %                       ;       `       `.     
+ %                       :.       .        \    
+ %                       . \  .   :   .-'   .   
+ %                       '  `+.;  ;  '      :   
+ %                       :  '  |    ;       ;-. 
+ %                       ; '   : :`-:     _.`* ;
+ %              [bug] .*' /  .*' ; .*`- +'  `*' 
+ %                    `*-*   `*-*  `*-*'        
+ %
+
+%%%%%%%%%% Categories, 2-categories, and functors
+\newcommand{\Set}{\mathbf{Set}}
+\newcommand{\Finset}{\mathbf{FinSet}}
+\newcommand{\Span}{\mathbf{Span}}
+\newcommand{\Fib}{\mathbf{Fib}}
+\newcommand{\PreFib}{\mathbf{PreFib}}
+\newcommand{\Cone}{{\mathbf{Cone}}}
+\newcommand{\Fun}{\mathbf{Fun}}
+\newcommand{\PsFun}{\mathbf{PsFun}}
+\newcommand{\LaxFun}{\mathbf{LaxFun}}
+\newcommand{\OpFib}{\mathbf{OpFib}}
+\newcommand{\DFib}{\mathbf{DFib}}
+\newcommand{\DoFib}{\mathbf{DoFib}}
+\newcommand{\FibB}{\ensuremath{\mathbf{Fib}_{\KB}}}
+\newcommand{\Grp}{\mathbf{Grp}}
+\newcommand{\Ring}{\mathbf{Ring}}
+\newcommand{\CRing}{\mathbf{CRing}}
+\newcommand{\AbGrp}{\mathbf{AbGrp}}
+\newcommand{\Grpd}{\mathbf{Grpd}}
+\newcommand{\Top}{\mathbf{Top}}
+\newcommand{\hTop}{\mathbf{hTop}}
+\newcommand{\pthtop}{\mathbf{hTop_*}}
+\newcommand{\bun}{\mathbf{Bun}} 
+\newcommand{\cov}{\mathbf{Cov}}
+\newcommand{\Geom}{\mathbf{Geom}}
+\newcommand{\OpenGeom}{\mathbf{OpenGeom}}
+\newcommand{\Con}{{\mathfrak{Con}}}
+\newcommand{\Pos}{{\mathfrak{Poset}}}
+\newcommand{\thT}{\mathbb{T}}
+\newcommand{\Th}{\mathbf{Th}}
+\newcommand{\Mod}{\mathbf{Mod}}
+\newcommand{\Str}{\mathbf{Str}}
+
+\newcommand{\Cl}{\mathbf{Cl}}
+\newcommand{\Sh}{\mathbf{Sh}}
+\newcommand{\Psh}{\mathbf{Psh}}
+\newcommand{\Sch}{\mathbf{Sch}}
+\newcommand{\Desc}{\mathbf{Desc}}
+\newcommand{\cart}{\mathbf{Cart}}
+\newcommand{\et}{\mathbf{Ét}}
+\newcommand{\Gr}{\mathfrak{Gr}}
+\newcommand{\graph}{\bbG r}
+\newcommand{\Rel}{\mathbf{Rel}}
+\newcommand{\Par}{\mathbf{Par}}
+\newcommand{\Mat}{\mathbf{Mat}}
+\newcommand{\vect}{\ensuremath{\mathbf{Vec}}}
+\newcommand{\finvect}{\ensuremath{\mathbf{FinVec}}}
+\newcommand{\coh}{\mathbf{Coh}}
+
+\def\Frm{\mathop{\mathcal{F}\!{\textit rm}}\nolimits}
+\def\Idl{\mathop{\mathcal{I}\!{\textit dl}}\nolimits}
+\newcommand{\synz}[1]{\mathop{\mathcal{S}\!{\textit yn_0}}\nolimits(\mathbb{#1})}
+\newcommand{\syn}[1]{\mathop{\mathcal{S}\!{\textit yn}}\nolimits(\mathbb{#1})}
+\newcommand{\trun}[2]{||#2||_{#1}}
+\newcommand{\con}[1]{\vec{#1}}
+
+\newcommand{\Topos}{\mathfrak{Top}}
+\newcommand{\ETopos}{\mathcal{E}\mathfrak{Top}}
+\newcommand{\BTopos}{\mathcal{B}\mathfrak{Top}}
+\newcommand{\GTopos}{\mathcal{G}\mathfrak{Top}}
+\def\cat{\mathop{\mathbf{Cat}}}
+\newcommand{\Cat}{\mathop{\mathfrak{Cat}}}
+\def\CATT{\mathop{\mathbf{2} \mathfrak{CAT}}}
+\newcommand{\CAT}{\mathop{\mathbf{2}\mathfrak{Cat}}}
+\newcommand{\Cart}{\ensuremath{\mathcal{C}\mathit{art}}}
+\newcommand{\Sp}{\ensuremath{\mathbb{S}\mathbf{p}}}
+\newcommand{\Adj}{\ensuremath{\mathbb{A}\mathbf{dj}}}
+\newcommand{\bcod}{\ensuremath{\mathbb{C}\mathbf{od}}} %% bold codomain functor 
+\newcommand{\base}{\ensuremath{\mathbb{B}\mathbf{ase}}} %% base of a Grothendieck topos
+\newcommand{\num}[1]{\mathbf{#1}} %%% bold numbers
+\newcommand{\yon}{\mbox{\textit{y}}} %% Yoneda embedding
+\newcommand{\fibprod}[2]{\mathop{\leftidx{_{#1}}{\times}{_{#2}}}} %% fibre product with subscripts in the product
+
+\newcommand*{\ordlr}[3]{\mathord{\left#1{#2}\right#3}}
+\newcommand*{\commacat}[2]{\ordlr({#1 \mathbin{\downarrow} #2})}
+\newcommand*{\isocommacat}[2]{\ordlr({#1 \mathbin{\wr} #2})}
+
+\newcommand*{\slicecat}[2]{\mathord{#1 \mathord{\divslash} #2}}
+\newcommand*{\overcat}[2]{\mathord{#1 \sb{\mathord{\divslash} #2}}}
+\newcommand*{\undercat}[2]{\mathord{\sp{#1 \mathord{\divslash}} #2}}
+
+
+%%%%%%%% declare math operators
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\ob}{Ob}
+\DeclareMathOperator{\mor}{Mor}
+\DeclareMathOperator{\arr}{arr}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Bij}{Bij}
+\DeclareMathOperator{\Sub}{Sub}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\lan}{Lan}
+\DeclareMathOperator{\ran}{Ran}
+\def\Map{\mathop{\mathrm{Map}}\nolimits}
+
+%%%%%% other operators
+\newcommand{\Pull}{\ensuremath{\operatorname{Pull}}}
+\newcommand{\Push}{\ensuremath{\operatorname{Push}}}
+\newcommand{\dom}{\ensuremath{\operatorname{dom}}}
+\newcommand{\cod}{\ensuremath{\operatorname{cod}}}
+\newcommand{\ccod}{\ensuremath{\mathbb{C}\mathbf{od}}}
+\newcommand{\fst}{\ensuremath{\operatorname{\texttt{fst}}}}
+\newcommand{\snd}{\ensuremath{\operatorname{\texttt{snd}}}}
+\newcommand{\prfst}{\ensuremath{\operatorname{pr_0}}}
+\newcommand{\prsnd}{\ensuremath{\operatorname{pr_1}}}
+\def\inl{\mathsf{inl}}
+\def\inr{\mathsf{inr}}
+
+\newcommand{\Gl}{\ensuremath{\operatorname{Gl}}}
+\newcommand{\model}[1]{\ensuremath{#1\operatorname{-\Mod-}}}
+\newcommand{\struc}[1]{\ensuremath{#1\operatorname{-\Str-}}}
+
+
+
+%%%%%%% for labelling and renaming items simultaneously 
+\usepackage{enumitem}
+%***************
+\newtheoremstyle{thmstyle}
+  {\topsep}
+  {\topsep}
+  {\itshape\fontfamily{ptm}\selectfont}
+  {}
+  {\scshape\color{schoolcol}}
+  {.}
+  {.5em}
+  {}
+  
+\theoremstyle{thmstyle}
+\newtheorem{thm}{\textsc{Theorem}}[section]
+\newtheorem{lem}[thm]{\textsc{Lemma}}
+\newtheorem{cor}[thm]{\textsc{Corollary}}
+\newtheorem{prop}[thm]{\textsc{Proposition}}
+\newtheorem{conj}[thm]{\textsc{Conjecture}}
+\newtheorem*{nom}{\textsc{Nomenclature}}
+\newtheorem*{note}{\textsc{Note}}
+
+%**************
+\newtheoremstyle{defnstyle}
+  {\topsep}
+  {\topsep}
+  {}
+  {}
+  {\scshape\color{schoolcol}}
+  {.}
+  {.5em}
+  {}
+\theoremstyle{defnstyle}
+\newtheorem{defn}{\textsc{Definition}}[section]
+\newtheorem{cons}[defn]{\textsc{Construction}}
+\newtheorem{rem}[defn]{\textsc{Remark}}
+\newtheorem{ex}[defn]{\textsc{Example}}
+
+
+
+\newcommand{\keydef}[1]{\textsc{#1}}
+% Number numbered lists as (i), (ii), ...
+\renewcommand{\theenumi}{(\roman{enumi})}
+\renewcommand{\labelenumi}{\theenumi}
+
+
+\newcommand*{\smashsp}[2]{{#1}\sp{\smash{#2}}}
+%%%%%%%%%% MISCELLANEOUS SYMBOLS
+\newcommand*{\op}[1]{\smashsp{#1}{\mathrm{op}}}
+\newcommand*{\co}[1]{\smashsp{#1}{\mathrm{co}}}
+\newcommand*{\coop}[1]{\smashsp{#1}{\mathrm{co\hairspace op}}}
+% \newcommand{\op}[1]{#1^{\mathrm{op}}}
+% \newcommand{\co}[1]{#1^{\mathrm{co}}}
+% \newcommand{\coop}[1]{#1^{\mathrm{coop}}}
+\let\ten\otimes
+\newcommand{\oo}{\circ}
+\newcommand{\adj}{\dashv}
+\newcommand{\pr}{^\prime}
+\newcommand{\dn}{\downarrow}
+\newcommand{\trm}{\mathbb{1}}           % uses bbm package
+\newcommand{\walkarr}{\mathbb{2}}       % uses bbm package
+%\newcommand{\comma}[1]{#1^{\raisemath{2pt}{\dn}}}
+\newcommand{\comma}[1]{\ordlr({#1 \mathbin{\downarrow} #1})}
+\newcommand{\arrw}[1]{#1^{\raisemath{2pt}{\to}}}
+\newcommand{\doublecomma}[1]{#1^{\raisemath{2pt}{\to\to}}}
+\newcommand{\sub}[2]{#1_{\raisemath{-2pt}{#2}}}
+\newcommand{\sups}[2]{#1^{\raisemath{2pt}{#2}}}
+\newcommand{\subb}[2]{#1_{\raisemath{-4pt}{#2}}}
+\newcommand{\pair}[2]{( #1, #2 )}
+\newcommand{\tuple}[2]{\lang #1, #2 \rang}
+\newcommand{\revtuple}[2]{\lang #2, #1 \rang}
+\newcommand{\inc}{\ensuremath{\mathrm{Inc}}}
+\newcommand{\pt}{\textsl{pt}}
+\newcommand{\intvl}{\mathbb{I}}
+\newcommand{\str}[1]{{#1}^{\star}}
+\newcommand{\eqv}{\simeq}
+\newcommand{\isdef}{\equiv}
+\newcommand{\iso}{\cong}
+\newcommand{\alg}[1]{\mathfrak{#1}}
+\renewcommand{\dot}{\centerdot}
+\newcommand{\arrK}{\KK^{\bbI}}
+\newcommand{\altil}{\ensuremath{\widetilde{\alpha}}}
+\newcommand{\betil}{\ensuremath{\widetilde{\beta}}}
+\newcommand{\lang}{\langle}
+\newcommand{\rang}{\rangle}
+\newcommand{\bottom}{\bot}
+\newcommand{\name}[1]{\ulcorner#1\urcorner} 
+\newcommand{\san}[1]{\ensuremath{\mathsf{#1}}} %%sansmath letters
+\newcommand{\sem}[2]{\ensuremath{\llbracket #2 \rrbracket}_{#1}}
+
+
+
+\newcommand{\Prod}[2]{\mathop{\prod}\limits_{\substack{#1}}#2}
+\newcommand{\coProd}[2]{\mathop{\coprod}\limits_{\substack{#1}}#2}
+
+
+
+%% new greek letters
+\newcommand{\ep}{\ensuremath{\varepsilon}}
+\newcommand{\ph}{\ensuremath{\varphi}}
+
+%%%%%----- Steve's SK-4-AU --------- 
+\newcommand{\AU}{\mathbf{AU}}
+\newcommand{\AUpres}[1]{\AU\langle #1 \rangle}
+\newcommand{\thob}{\mathbb{O}}  
+\newcommand{\skext}{\subset}                 % sketch extension
+\newcommand{\Sk}{\mathsf{Sk}}                % graph or cat of sketches
+\newcommand{\skeqext}{\Subset}               % sketch equivalence extension
+\newcommand{\skhom}{\lessdot}              % sketch homomorphism
+\newcommand{\skhommap}{\gtrdot}               % sketch homomorphism backwards
+\newcommand{\thextmap}{\supset}              % theory extension map
+\newcommand{\theqextmap}{\Supset}            % theory equivalence extension map
+\newcommand{\thmorphmap}{\gtrdot}            % theory morphism map
+\newcommand{\skdiag}{\sim}                   % diagrams in sketches
+\newcommand{\skn}{\mathrm{G}^{0}}    % nodes
+\newcommand{\sknid}{\mathrm{s}}       % identity
+\newcommand{\ske}{\mathrm{G}^{1}}    % edges
+\newcommand{\skface}{\mathrm{d}}     % faces (for edges and triangles)
+\newcommand{\skedom}{\skface_0}     % domain
+\newcommand{\skecod}{\skface_1}     % codomain
+\newcommand{\sktri}{\mathrm{G}^{2}}  % diagrams for binary composites
+\newcommand{\sktril}{\skface_0}   % first
+\newcommand{\sktrir}{\skface_2}   % second
+\newcommand{\sktric}{\skface_1}   % composite
+\newcommand{\skut}{\mathrm{U}^{\qeqt}} % universals for terminals
+\newcommand{\skutn}{\mathrm{tm}}      % terminal node
+\newcommand{\skupb}{\mathrm{U}^{\mathrm{pb}}} % universals for pullbacks
+\newcommand{\skupbtri}{\Gamma}       % triangle for half of pb square
+\newcommand{\skui}{\mathrm{U}^{\qeqi}} % universals for initials
+\newcommand{\skuin}{\mathrm{i}}      % initial node
+\newcommand{\skupo}{\mathrm{U}^{\mathrm{po}}} % universals for pushouts
+\newcommand{\skupotri}{\Gamma}       % triangle for half of po square
+\newcommand{\skul}{\mathrm{U}^{\mathrm{list}}} % universals for list objects L = List(A)
+\newcommand{\skulpb}{\Lambda_2}      % universal for LxA
+\newcommand{\skult}{\Lambda_0}       % universal for terminal
+\newcommand{\skule}{\mathrm{e}}      % empty list
+\newcommand{\skulcons}{\mathrm{c}}   % cons
+\newcommand{\qeqobj}{\mathrm{obj}}          % sort for objects
+\newcommand{\qeqarr}{\mathrm{arr}}          % sort for morphisms
+\newcommand{\qeqdom}{\mathsf{d}}            % domain
+\newcommand{\qeqcod}{\mathsf{c}}            % codomain
+\newcommand{\qeqid}{\mathsf{id}}            % identity morphism
+\newcommand{\qeqcomp}{\circ}                % composition, binary, applicational order
+\newcommand{\qeqt}{1}                 % terminal object
+\newcommand{\qeqtfill}{\mathop{!}\nolimits^{\qeqt}}                 % unique morphism to terminal object
+\newcommand{\qeqlcons}{\mathop{\mathsf{cons}}}        % cons
+\newcommand{\qeqprodproj}{\mathsf{p}}       % projections from product
+\newcommand{\qeqproj}[2]{\qeqprodproj_{#1,#2}}% projections from pullback
+\newcommand{\qeqpb}[2]{\mathsf{P}_{#1,#2}}             % pullback object
+\newcommand{\qeqpbfill}[4]{\left\langle #1, #2 \right\rangle_{#3,#4}} % pullback fillin
+\newcommand{\qeqprodfill}[2]{\left\langle #1, #2 \right\rangle} % product fillin
+\newcommand{\qeqeq}[2]{\mathsf{eq}_{#1,#2}}  % equalizer morphism for #1,#2
+\newcommand{\qeqeqdom}[2]{\mathsf{E}_{#1,#2}}% equalizer object for #1,#2
+%\newcommand{\qeqpbu}{\mathsf{u}}            % uniqueness for pullback fillin
+\newcommand{\qeqi}{0}              % initial object
+\newcommand{\qeqifill}{\mathop{!}\nolimits^{\qeqi}}                 % unique morphism from initial object
+\newcommand{\qeqinj}[2]{\mathsf{q}_{#1,#2}} % injections to pushout
+\newcommand{\qeqpo}[2]{\mathsf{Q}_{#1,#2}}             % pushout object
+\newcommand{\qeqpofill}[4]{\left[ #1, #2 \right]_{#3,#4}} % pushout fillin
+%\newcommand{\qeqpou}{\mathsf{v}}            % uniqueness for pushout fillin
+\newcommand{\qequc}{\mathsf{uc}}            % unique choice (balance)
+\newcommand{\qeqpostab}[3]{\mathsf{stab}_{#1,#2}(#3)} % iso for stability along #3 of pushout of ##1,2
+\newcommand{\qeqex}{\mathsf{ex}}            % exactness iso
+\newcommand{\qeqle}{\varepsilon}        % empty list
+
+  % old notation from Maietti-Vickers
+%\newcommand{\qeqle}{\mathsf{r}_{0}}        % empty list
+%\newcommand{\qeqlsnoc}{\mathsf{r}_{1}}        % snoc
+\newcommand{\qeql}{\mathsf{List}}           % list object
+\newcommand{\qeqlrec}[3]{\mathsf{rec}^{#1}(#2,#3)} % rec (A,b,g)
+\newcommand{\qeqlu}[4]{\mathsf{u}^{#1}_{#2,#3}(#4)}        % list uniqueness (A,b,g,r)
+\newcommand{\thone}{\mathbb{1}}
+
+
+
+%%%%%%%
+\newdir{ >}{{}*!/-10pt/@{>}}
+\newdir{ |}{{}*!/-10pt/@{|}}
+\newdir{> }{!/10pt/@{>}*{}}
+
+
+
+%%%%%%
+
+\makeatletter
+\newdimen\itex@wd%
+\newdimen\itex@dp%
+\newdimen\itex@thd%
+\def\itexspace#1#2#3{\itex@wd=#3em%
+\itex@wd=0.1\itex@wd%
+\itex@dp=#2ex%
+\itex@dp=0.1\itex@dp%
+\itex@thd=#1ex%
+\itex@thd=0.1\itex@thd%
+\advance\itex@thd\the\itex@dp%
+\makebox[\the\itex@wd]{\rule[-\the\itex@dp]{0cm}{\the\itex@thd}}}
+\makeatother
+
+
+
